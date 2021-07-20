@@ -1,0 +1,235 @@
+{% extends 'base.html' %}
+
+    {%block head%}
+        <title>AskMate</title>
+
+        <!-- Delete alert over time -->
+            <script>
+            setTimeout(() => {
+                const elem = document.getElementById("alert");
+                elem.parentNode.removeChild(elem);
+            }, 2000);
+
+        </script>
+
+    {%endblock%}
+
+    {% block body%}
+
+    {% with messages = get_flashed_messages() %}
+    {% if messages == 'Log in failed' %}
+    <div class="d-flex justify-content-evenly" id="alert">
+        <div class="alert alert-danger" role="alert">{{messages[0]}}</div>
+    </div>
+    {%elif messages %}
+    <div class="d-flex justify-content-evenly" id="alert">
+        <div class="alert alert-success" role="alert">{{messages[0]}}</div>
+    </div>
+    {% endif %}
+    {% endwith %}
+
+        <!-- register -->
+        <div class="modal fade"
+            id="register"> 
+            <div class="modal-dialog"> 
+                <div class="modal-content"> 
+                    <div class="modal-body ">
+                        <div class="padding container d-flex justify-content-center">
+                            <div class="col-md-10 col-md-offset-1">
+                                <form action="/" method="post" class="register-form">
+                                    <h2 class="text-center">Register</h2>
+                                    <hr>
+                                    <div class="form-group" style="margin-top: 5px;"> <input type="email" id="email" name="email" class="form-control" placeholder="Email Address" required="required"> </div>
+                                    <div class="form-group" style="margin-top: 5px;"> <input type="text" id="username" name="username" class="form-control" placeholder="User Name" required="required"> </div>
+                                    <div class="form-group" style="margin-top: 5px;"> <input type="password" id="password" name="password" class="form-control" placeholder="Password" required="required"> </div>
+                                    <div class="form-group text-center"style="margin-top: 5px;"> <button type="submit" class="btn btn-secondary">register</button> </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div> 
+                </div> 
+            </div> 
+        </div>
+        <!-- end register form-->
+
+        <div class="row">
+            <div class="col-lg-12 card-margin">
+                <div class="card search-form" style="-webkit-box-shadow: 5px 5px 15px 3px rgba(0,0,0,0.4); 
+                box-shadow: 5px 5px 15px 3px rgba(0,0,0,0.4);">
+                    <div class="card-body p-0">
+                        <form id="search-form">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="row no-gutters">
+                                        <div class="col-lg-3 col-md-3 col-sm-12 p-0">
+                                            <select class="form-control" name="search-tag">
+                                                <option value="" selected disabled>Tags</option>
+                                                {%for tag in all_tag%}
+                                                <option value="{{tag.id}}">{{tag.name}}</option>
+                                                {%endfor%}
+
+
+                                            </select>
+                                        </div>
+                                        <div class="col-lg-8 col-md-6 col-sm-12 p-0">
+                                            <input type="text" placeholder="Search..." class="form-control" name="search">
+                                        </div>
+
+                                        <div class="col-lg-1 col-md-3 col-sm-12 p-0">
+                                            <button type="submit" class="btn btn-base">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    <div class="row"  style="width: 95%; margin: auto;">
+        <div class="col-12">
+            <div class="card card-margin" style="-webkit-box-shadow: 5px 5px 15px 3px rgba(0,0,0,0.4); 
+            box-shadow: 5px 5px 15px 3px rgba(0,0,0,0.4);">
+                <div class="card-body" >
+                    
+                <!-- navigation buttons-->
+                <div class="row">
+                    {%if session["username"] is defined%}
+                    <div class="col" style="margin: 5px;">
+                        <div class="btn-group text-center" role="group" aria-label="loginGroup">
+                            <a href="/add_questions" style='text-align:center;'type="button" class="btn btn-outline-secondary btn-sm">Ask question</a>
+                            <a class="btn btn-outline-secondary btn-sm" href="/users" role="button">Registered users</a>
+                    
+                        </div>
+                    </div>
+                    {%endif%}
+                    <div class="col d-flex justify-content-end align-items-center">
+
+                            {%if session["username"] is defined%}
+                            <span class="badge bg-secondary" style="margin: 5px;">{{"Welcome!  " + session["username"]}}</span>   
+                            <a style="text-decoration: none;" href="/edit_profile/"><i class= "fas fa-user-edit" style="color: #c4cacf"></i></a>
+                                <form method="post" action="/logout" style="margin: 5px;">
+                                    <button type="submit" class="btn btn-outline-secondary btn-sm">Log out</button>
+                                </form>         
+                            </div>
+
+                            {%else%}
+                                <div class="btn-group text-center" role="group" aria-label="loginGroup">
+                                <button type="button" class="btn btn-outline-secondary btn-sm" data-toggle="modal" 
+                                data-target="#register">Register</button>
+                                <button type="button" class="btn btn-outline-secondary btn-sm" data-toggle="modal" 
+                                data-target="#login">Login</button>
+                            </div>
+                            {%endif%}
+                    </div>
+                             <!-- login -->
+        <div class="modal fade"
+        id="login"> 
+        <div class="modal-dialog"> 
+            <div class="modal-content"> 
+                <div class="modal-body ">
+                    <div class="padding container d-flex justify-content-center">
+                        <div class="col-md-10 col-md-offset-1">
+                            <form action="/login" method="post" class="register-form">
+                                <h2 class="text-center">Log in</h2>
+                                <hr>
+                                <div class="form-group" style="margin-top: 5px;"> <input type="email" id="email" name="email" class="form-control" placeholder="Email" required="required"> </div>
+                                <div class="form-group"style="margin-top: 5px;"> <input type="password" id="password" name="password" class="form-control" placeholder="Password" required="required"> </div>
+                                <div class="form-group text-center" style="margin-top: 5px;"> <button type="submit" class="btn btn-secondary">Log In</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end login form-->        
+                <!-- navigation buttons end-->
+
+                    <div class="row search-body" >
+                        <div class="col-lg-12">
+                            <div class="search-result">
+                                <div class="result-header">
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="result-actions">
+                                                <div class="result-sorting">
+                                                    <span>Sort By:</span>                                                    
+                                                    <form action="/">
+                                                    <select class="form-control border-0" name="sort-option" onchange="this.form.submit()">
+                                                        <option value="most-view" selected disabled>Select filter</option>
+                                                        <option value="most-recent">Newest questions</option>
+                                                        <option value="most-view">Most viewed</option>
+                                                        <option value="most-upvote">Most upvoted</option>
+                                                        <option value="least-upvote">Least upvoted</option>
+                                                        <option value="least-view">Least viewed</option>
+                                                    </select>
+                                                </form>                                 
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="result-body">
+                                    <div class="table-responsive" >
+                                        <table class="table widget-26" >
+                                            <tbody>
+                                                {%for item in list_questions%}
+
+                                                <tr>
+                                                    <td>
+                                                        <div class="widget-26-job-title">
+                                                            {%if item.submission_time.strftime('%Y-%m-%d')  == current_date%}
+                                                            <a class="text-decoration-none" href="/display/{{item.id}}">{{item.title}} <span class="badge rounded-pill bg-dark">New</span></a>
+                                                            {%else%}
+                                                            <a class="text-decoration-none" href="/display/{{item.id}}">{{item.title}}</a>
+                                                            {%endif%}
+                                                            <p class="m-0"><a class="employer-name text-decoration-none">{{item.username}}</a> <span class="text-muted time">{{item.submission_time}}</span></p>
+                                                                                                                  {%if session["username"] == item.username%}  <a href="/edit_questions/{{item.id}}" type="button" class="far fa-edit text-decoration-none"></a>{%endif%}
+                                                                                                                  {%if session["username"] == item.username%}  <a href="/delete/{{item.id}}" type="button" class="fas fa-trash-alt text-decoration-none"></a>{%endif%}
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="widget-26-job-info">
+                                                            {% if item.vote_number >= 5 %}
+                                                            <span  class="badge rounded-pill bg-success">{{item.vote_number}} votes</span>
+                                                            {% elif item.vote_number < 0 %}
+                                                            <span  class="badge rounded-pill bg-danger">{{item.vote_number}} votes</span>
+                                                            {%else%}
+                                                            <span  class="badge rounded-pill bg-secondary">{{item.vote_number}} votes</span>
+                                                            {%endif%}
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="badge rounded-pill bg-secondary">{{item.view_number}} views</div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="wrapper">         
+                                                            {%for i in list_tags%}
+                                                            {%for j in i%}
+                                                            {%if item.id == j.question_id%}
+                                                            <span class="badge rounded-pill bg-primary">{{j.name}}</span>
+                                                            {%endif%}
+                                                            {%endfor%}
+                                                            {%endfor%}
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                {%endfor%}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    {%endblock%}

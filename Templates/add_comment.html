@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+    {%block head%}
+        <title>Add answer</title>
+    {%endblock%}
+
+    {%block body%}
+
+    <div class="container contact-form">
+        <form action="/comments/add/{{question_id}}" method="post" enctype="multipart/form-data">
+            <h3>Add Answer</h3>
+            
+           <div class="row">
+                <div class="col-md-6">
+
+                </div>
+                <div class="form-group" style="margin: 1%">
+                    {%for i in list_questions%}
+                    <textarea id="question_message" name="question_message" class="form-control" placeholder="{{i.message}}" style="width: 100%; height: 150px;" readonly></textarea>
+                    {%endfor%}
+                </div>
+                <div class="form-group" style="margin: 1%">
+                    <textarea id="message" name="message" class="form-control" placeholder="" style="width: 100%; height: 150px;" required></textarea>
+                </div>
+
+                <label style="margin: 1%" class="form-label" for="image">Upload your image:</label>
+                <input style="margin: 1%" type="file"  class="form-control" id="image" name="image" />
+
+                <input style="margin: 1%" type="submit" name="btnSubmit" class="btnContact" value="Answer question"/>
+            
+            </div>
+        </form>
+</div>
+
+
+
+
+
+
+    <!--{%for i in list_questions%}
+        <h1>ADD COMMENT</h1>
+        <form action="/comments/add/{{question_id}}" method="post" enctype="multipart/form-data">
+            <input id="question_id" name="question_id" type="text" readonly value="{{question_id}}"></br>
+            <label for="question_msg">Question that you wanna answer!:</label></br>
+            <textarea id= "question_msg" name ="question_msg" type="text" value="{{i.message}}" rows="10" cols="100" readonly required>{{i.message}}</textarea></br>
+            <label for="message"> Answer the problem:</label></br>
+            <textarea id="message" name="message" rows="4" cols="60" required></textarea></br>
+            <label for="submission_time">Submission Time:</label></br>
+            <input type="date" id="submission_time" name="submission_time" required></textarea></br>
+            <label class="form-label" for="image">Upload your image:</label>
+            <input type="file" class="form-control" id="image" name="image" />
+            </br>
+            <input class="btn btn-primary" type="submit"></button>
+        </form>-->
+       
+    <script>
+    $(document).ready(function() {
+    var date = new Date();
+
+    var day = date.getDate();
+    var month = date.getMonth() + 1;
+    var year = date.getFullYear();
+
+    if (month < 10) month = "0" + month;
+    if (day < 10) day = "0" + day;
+
+    var today = year + "-" + month + "-" + day;       
+    $("#submission_time").attr("value", today);
+});</script>
+{%endfor%}
+    {%endblock%}

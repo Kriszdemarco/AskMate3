@@ -1,0 +1,45 @@
+{%extends 'base.html' %}
+
+{%block head%}
+
+{%endblock%}
+
+{%block body%}
+<h3 class="display-3 text-center">Registered users</h3>
+
+<div class="row justify-content-center">
+    <div class="col-auto">
+        <table class="table table-bordered table-striped table-light table-hover">
+            <thead>
+            <tr> 
+                <th scope="col">Profile Picture</th>          
+                <th scope="col">Username</th>
+                <th scope="col">Email</th>
+                <th scope="col">Registration date</th>
+                <th scope="col">Questions asked</th>
+                <th scope="col">Questions answered</th>
+                <th scope="col">Comments</th>
+                <th scope="col">Reputation</th>
+            </tr>
+
+            </thead>
+
+            <tbody>
+                {%for item in list_users%}
+            <tr>
+                <td class="text-center"><img  src="/static/images/{{item.image}}" class="rounded-circle" width="50" height="50"/></td>
+                <td>{{item.username}}</td>
+                <td>{{item.email}}</td>
+                <td>{{item.regdate}}</td>
+                <td>{{item.question}}</td>
+                <td>{{item.answers}}</td>
+                <td>{{item.comments}}</td>
+                {%for item2 in list_questions%}{%if item2.username == item.username%} <td>{{item2.rep}}</td>{%endif%}{%endfor%}
+            </tr>
+            {%endfor%}
+
+            </tbody>
+        </table>
+    </div>
+</div>
+{%endblock%}

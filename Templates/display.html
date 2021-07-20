@@ -1,0 +1,225 @@
+{% extends 'base.html' %}
+
+    {%block head%}
+    {%for i in list_questions%}
+        <title>AskMate {{i.title}}</title>
+        {%endfor%}
+    {%endblock%}
+
+{% block body%}
+
+{%for i in list_questions%}
+<section class="card mt-4"  style="margin: auto; width: 88%; margin-bottom: 2%;">
+    <div class="border p-2">
+        <!-- Question-->
+        <div class="row" style="margin: auto;">
+            <div class="row" >
+                {%if session["username"] and session["password"] is defined%}
+                <div class="col-md-auto" style="padding: 3px;">
+                    <div class="col text-center">
+                        <a class="fas fa-chevron-up" href="/display/{{question_id}}/vote_up" role="button" style="text-decoration: none;"></a>
+                    </div>
+        
+                    <div class="col ">
+                        {% if i.vote_number >= 5 %}
+                        <span style="margin: 5px;" class="badge rounded-pill bg-success">{{i.vote_number}}</span>
+                        {% elif i.vote_number < 0 %}
+                        <span style="margin: 5px;" class="badge rounded-pill bg-danger">{{i.vote_number}}</span>
+                        {%else%}
+                        <span style="margin: 5px;" class="badge rounded-pill bg-secondary">{{i.vote_number}}</span>
+                        {%endif%}
+                    </div>
+        
+                    <div class="col text-center">
+                        <a class="fas fa-chevron-down" href="/display/{{question_id}}/vote_down" role="button" style="text-decoration: none;"></a>
+                    </div>   
+                    {%endif%}
+                </div>
+                <div class="col-md-auto" style="padding: 0%;">
+                    {%for usr in list_usr%}
+                    {%if usr.username == i.username%}
+                    <picture>
+                    {% if usr.image == 'NONE' %}
+                    <img src="/static/images/deafult.jpg" class="rounded-circle" width="50" height="50"/>
+                    {%else%}
+                    <img  src="/static/images/{{usr.image}}" class="rounded-circle" width="50" height="50"/>
+                    </picture>
+                    {%endif%}
+                    {%endif%}
+                    {%endfor%}
+                    <p class="small text-secondary m-0 mt-1">{{i.username}}</p>
+                    <p class="small text-secondary m-0 mt-1">{{i.submission_time}}</p> 
+ 
+                </div>
+
+                <div class="col text-center" style="padding-right: 18%;">
+                    <h2 class="text-center h5">{{i.title}}</h2>
+                    <p style="text-align: center;">{{i.message}}</p>
+
+                </div>
+
+        </div>
+        <!-- question end-->
+
+        {%if i.image != "default.png" %}
+        <img src="/static/images/{{i.image}}" width="300" height="300" class="centimage">
+        <img src={{i.image}} class="card-img-bottom" alt="">
+        {%endif%}
+        <footer class="">
+
+            <div class="">
+                <ul class="list-group list-group-horizontal">
+                    <li class="list-group-item flex-fill text-center p-0 px-lg-2 border border-0">
+                        <a class="small text-decoration-none">
+                            <i class="fas fa-heart"></i> {{i.vote_number}} Like
+                        </a>
+                    </li>
+                    <li class="list-group-item flex-fill text-center p-0 px-lg-2 border border-right-0 border-top-0 border-bottom-0">
+                        <a class="small text-decoration-none">
+                            <i class="fas fa-comment-alt"></i> {{list_comments|length}} Answer
+                        </a>
+                    </li>
+                    <li class="list-group-item flex-fill text-center p-0 px-lg-2 border border-right-0 border-top-0 border-bottom-0 ">
+                        <a class="w-auto p-3">
+                            {%for i in list_tags%}
+                            {% if i.name == 'python' %}
+                            <i class="fab fa-python">Python</i>
+                            {% elif i.name == 'css' %}
+                            <i class="fab fa-css3-alt">CSS</i>
+                            {% elif i.name == 'sql' %}
+                            <i class="fas fa-database">SQL</i>
+                            {%else%}
+                            <i class="fas fa-code">{{i.name}}</i>
+                            {%endif%}
+                            {%endfor%}
+
+                        </a>
+                    </li>
+                    {%if session["username"] and session["password"] is defined%}
+                    <li class="list-group-item flex-fill text-center p-0 px-lg-2 border border-right-0 border-top-0 border-bottom-0 ">
+                        <a href="/comments/add/{{question_id}}" style='text-align:center;'type="button" class=" fas fa-reply text-decoration-none">Answer question</a>
+                        {%endif%}
+                    </li>
+                </ul>
+            </div>
+        </footer>
+    </section>
+{%endfor%}
+
+{%if list_comments%}
+<div class="container">
+    {%for item in list_comments%}
+	<div class="card" style="margin: 5px;">
+        {%if item.accepted%}
+	    <div class="card-body" style="background-color: #a0e7a0;">
+        {%else%}
+        <div class="card-body">
+        {%endif%}
+	        <div class="row" style="margin: auto;">
+        	    <div class="col-md-auto" style="margin: 0%; padding: 0%;">	
+                    {%if session["username"] and session["password"] is defined%}
+                    <div class="col text-center">
+                        <a class="fas fa-chevron-up" href="/comments/{{question_id}}/{{item.id}}/vote_up" role="button" style="text-decoration: none;"></a>
+                    </div>
+                    <div class="col">
+                        {% if item.vote_number >= 5 %}
+                        <span style="margin: 5px;" class="badge rounded-pill bg-success">{{item.vote_number}}</span>
+                        {% elif item.vote_number < 0 %}
+                        <span style="margin: 5px;" class="badge rounded-pill bg-danger">{{item.vote_number}}</span>
+                        {%else%}
+                        <span style="margin: 5px;" class="badge rounded-pill bg-secondary">{{item.vote_number}}</span>
+                        {%endif%}
+                    </div>
+                    <div class="col text-center">                    
+                    <a class="fas fa-chevron-down" href="/comments/{{question_id}}/{{item.id}}/vote_down" role="button" style="text-decoration: none;"></a>
+
+                    </div>
+                    {%endif%}
+                </div>
+
+
+                <div class="col-md-auto" style="padding: 0%;">
+
+                    {%for usr in list_usr%}
+                    {%if usr.username == item.user_name%}
+                    <picture>
+                        {% if usr.image == 'NONE' %}
+                        <img src="/static/images/deafult.jpg" class="rounded-circle" width="50" height="50"/>
+                        {%else%}
+                        <img  src="/static/images/{{usr.image}}" class="rounded-circle" width="50" height="50"/>
+                        {%endif%}
+                    </picture>
+                    {%endif%}
+                    {%endfor%}
+                    <p class="small text-secondary m-0 mt-1">{{item.user_name}}</p>
+                    <p class="text-secondary">{{item.submission_time}}</p>
+                </div>
+                <div class="col">
+                    <p>{{item.message}}</p>
+                </div>
+
+
+                {%for item in list_questions%}
+                {% if session["username"] == item.username%}
+                {%for i in list_comments%}
+                {%if i.accepted%}                   
+                    <div class="col-md-auto">
+
+                        <a style="text-decoration: none;" href="/display/{{item.id}}/disable_mark_answer/"><i class="fas fa-handshake-alt-slash"></i></a>
+                    </div>
+                        {%else%}
+                        <div class="col-md-auto">
+                        <a style="text-decoration: none;" href="/display/{{item.id}}/mark_answer/"><i class="fas fa-handshake"></i></a>
+                    </div>
+                        {%endif%}
+                        {%endfor%}
+                        {%endif%}
+                        {%endfor%}
+
+                    {%if session["username"] and session["password"] is defined%}
+                    {% if session["username"] == item.user_name%}
+                    <div class="col-md-auto">
+                        <a style="text-decoration: none;" href="/comments/{{item.id}}/{{question_id}}/add/"><i class="fa fa-reply"></i></a>
+                        <a style="text-decoration: none;" href="/display/{{item.id}}/delete"><i class="fas fa-trash-alt"></i></a>
+                    </div>
+                    {%endif%}
+                    {%endif%}
+
+
+
+                {%if item.image != 'default.png'%}
+        	    <div class="col-md-10">
+        	        <p>
+                        <img src="/static/images/{{item.image}}" width="350" height="350" class="centimage">
+                   </p>
+        	    </div>
+                {%endif%}
+            </div>
+            {%for i in nested_comment%}
+            {%if i.answer_id == item.id%}
+	        	<div class="card card-inner">
+            	    <div class="card-body">
+
+            	        <div class="row">
+                    	    <div class="col-3">
+                    	        <img src="https://cdn3.iconfinder.com/data/icons/avatars-round-flat/33/avat-01-512.png" width="50" height="50"/>
+                                <p class="small text-secondary m-0 mt-1">{{i.user_name}}</p>
+                    	        <p class="text-secondary">{{i.submission_time}}</p>
+                    	    </div>
+                            
+                    	    <div class="col">
+                    	        <p>{{i.message}}</p>
+                    	    </div>
+
+            	        </div>
+            	    </div>
+                </div>
+                {%endif%}
+             {%endfor%}
+	    </div>
+    </div>
+    {%endfor%}
+</div>
+{%endif%}
+
+{%endblock%}

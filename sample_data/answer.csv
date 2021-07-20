@@ -1,0 +1,4 @@
+id,submission_time,vote_number,question_id,message,image
+0,2021-01-21,2,0,integers are numbers,
+1,2021-01-21,0,1,The str() function converts the specified value into a string.,
+2,2021-01-21,0,1,can you specify your question? do you mean by the DATA-TYPE or the converter?,

@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+    {%block head%}
+        <title>ASKMATE COMMENT SECTION</title>
+        {%endblock%}
+    {%block body%}
+    <h1>ASKMATE COMMENT SECTION</h1>
+   <table class="table table-striped table-dark">
+  <tr>
+    {% for item in com_table_header %}
+      <th>{{ item }}</th>
+    {% endfor %}
+  </tr>
+  {% for item in list_comments %}
+    <tr>
+        {% for data in item %}
+            {% if data == 'title' %}
+                <td><a href={{ '/index/' + item['id']}}>{{ item[data] }}</a></td>
+            {% else %}
+                <td>
+                    {{ item[data] }}
+                </td>
+            {% endif %}
+        {% endfor %}
+    </tr>
+  {% endfor %}
+</table>
+<div class="menu-container">
+    <div class="button-container">
+        <a class="btn btn-dark" href="/" role="button">Back</a>
+{%endblock%}

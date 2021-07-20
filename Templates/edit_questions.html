@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+    {%block head%}
+        <title>{{ 'Update question' if question_id is defined else 'Add new question' }}</title>
+    {%endblock%}
+
+    {%block body%}
+    <div class="container contact-form">
+        <form action={{ "/edit_questions/"+ question_id if question_id is defined else "/edit_questions/" }} method="post" enctype="multipart/form-data">   
+            <h3>Edit question</h3>
+
+           <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group text-center " style="margin: 1%">
+                            {%for i in list_question%}
+                            <input id= "title" name ="title" minlength="5" type="text" name="txtName" class="form-control" style="width: 175%;" value="{{i.title}}" required />    
+                            {%endfor%}
+                    </div>
+
+                </div>
+                <div class="form-group" style="margin: 1%">
+                    {%for i in list_question%}
+                    <textarea id="message" name="message" class="form-control" placeholder="{{i.message}}" style="width: 100%; height: 150px;" required></textarea>
+                    {%endfor%}
+                </div>
+
+                <div class="col-md-6">
+                <div class="form-group" style="margin: 1%">
+                    <input type="date" id="submission_time" class="form-control" name="submission_time" required></textarea>
+                 </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group" style="margin: 1%">
+                        <select class="form-select" name="tags" id="tags">
+                            <option value="">Select tag</option>
+                            {%for i in list_tags%}
+                            <option id="tags" name="tags" placeholder="Choose tag" value="{{i.id}}">{{i.name}}</option>
+                            {%endfor%}
+                            </select>
+                    </div>
+                    </div>
+
+                <label style="margin: 1%" class="form-label" for="image">Upload your image:</label>
+                <input style="margin: 1%" type="file"  class="form-control" id="image" name="image"/>
+
+                <input style="margin: 1%" type="submit" name="btnSubmit" class="btnContact" value="Edit question" />
+            
+            </div>
+        </form>
+</div>
+    
+    
+    
+    
+    
+    
+    <!--<h1>{{ 'Update question' if question_id is defined else 'Add new question' }}</h1>
+        <form action={{ "/edit_questions/"+ question_id if question_id is defined else "/edit_questions/" }} method="post" enctype="multipart/form-data">
+            <label for="title">Type your question!:</label></br>
+            {%for i in list_title%}
+            <input id= "title" name ="title" type="text" value="{{i.title}}"minlength="5" required></br>
+            {%endfor%}
+            <label for="message">Discribe your problem:</label></br>
+            {%for i in list_msg%}
+            <textarea id="message" name="message" rows="4" cols="60" required>{{i.message}}</textarea></br>
+            {%endfor%}
+            <label for="submission_time">Submission Time:</label></br>
+            <input type="date" id="submission_time" name="submission_time" value="{{list_question}}"required></textarea></br>
+            <label class="form-label" for="image">Upload your image:</label>
+            <input type="file" class="form-control" id="image" name="image"/>
+            </br>
+            <input class="btn btn-primary" type="submit" ></button>
+        </form>-->
+
+    <script>
+    $(document).ready(function() {
+    var date = new Date();
+
+    var day = date.getDate();
+    var month = date.getMonth() + 1;
+    var year = date.getFullYear();
+
+    if (month < 10) month = "0" + month;
+    if (day < 10) day = "0" + day;
+
+    var today = year + "-" + month + "-" + day;       
+    $("#submission_time").attr("value", today);
+});</script>
+    {%endblock%}
